@@ -1,6 +1,5 @@
 # simple_histograms
 ## A very basic and simple of use Rust implementation of a histogram.
----
 
 **This library is meant to plot histograms, not calculate quantiles, median, etc which other libraries already do.**
 

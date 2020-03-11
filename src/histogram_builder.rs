@@ -1,8 +1,8 @@
 use crate::histogram::Histogram;
 
-/// used to create a `Histogram`
-/// `values`       : the data to plot on the histogram
-/// `range`        : the range of data considered /!\ data outside the range are not considered
+/// used to create a `Histogram`  
+/// `values`       : the data to plot on the histogram  
+/// `range`        : the range of data considered /!\ data outside the range are not considered  
 /// `step_number`  : the number of "rectangles" to plot (I think it's also the number of "bucket" in other libraries)
 pub struct HistogramBuilder {
     values: Vec<f64>,
@@ -10,10 +10,10 @@ pub struct HistogramBuilder {
     step_number: u32,
 }
 
-/// Ranges are the intervals of values that will be considered when calling `as_hist`
+/// Ranges are the intervals of values that will be considered when calling `as_hist`  
 /// ie: any value outside of the interval will *not* be considered when calling `as_hist`
 ///
-/// `Specified(min, max)` explicitly mentions the bounds
+/// `Specified(min, max)` explicitly mentions the bounds.  
 ///  min must be smaller than max ! (a null interval is invalid)
 ///
 /// `Unspecified` will go from the smallest to the largest value

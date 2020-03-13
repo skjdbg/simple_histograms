@@ -13,19 +13,16 @@ I created this library for two reasons :
 
 The way this library works is pretty simple. 
 1. Create a `Vec<f64>`, the put your data in it and process them in any way you like.
-2. Turn it into a `HistogramBuilder` by specifying a `Range`, and a number of steps.
-3. Make it into a `Histogram`.
-4. Plot it, or use the Vectors generated.
+2. Turn it into a `Histogram` by specifying a `Range`, and a number of steps.
+3. Plot it, or use the Vectors generated.
 
-Alternatively, you can directly create a `HistogramBuilder` and push values into it if you don't want to create an intermediary variable and don't need any processing to be done.
 
 ```Rust
-use simple_histograms::{HistogramBuilder, Range};
+use simple_histograms::{from_vec, Range};
 
 let values = vec![1.0, 2.0, 3.0, 4.0, 4.0, 5.0];
 
-let builder = HistogramBuilder::from_vec(values, Range::Specified(2.0, 4.0), 3);
-let hist = builder.as_hist();
+let hist = from_vec(values, Range::Specified(2.0, 4.0), 3);
 
-assert_eq!(hist.get_ys(), [1 1 2]);
+assert_eq!(*hist.get_ys(), [1, 1, 2]);
 ```

@@ -1,12 +1,14 @@
 use crate::histogram::Histogram;
 
 /// used to create a `Histogram`  
+/// 
 /// `values`       : the data to plot on the histogram  
 /// `range`        : the range of data considered /!\ data outside the range are not considered  
 /// `step_number`  : the number of "rectangles" to plot (I think it's also the number of "bucket" in other libraries)
+#[derive(Debug)]
 pub struct HistogramBuilder {
     values: Vec<f64>,
-    range: Ranges,
+    range: Range,
     step_number: u32,
 }
 
@@ -17,14 +19,15 @@ pub struct HistogramBuilder {
 ///  min must be smaller than max ! (a null interval is invalid)
 ///
 /// `Unspecified` will go from the smallest to the largest value
-pub enum Ranges {
+#[derive(Debug)]
+pub enum Range {
     Unspecified,
     Specified(f64, f64),
 }
 
 impl HistogramBuilder {
-    pub fn new(rng: Ranges, step_num: u32) -> Self {
-        if let Ranges::Specified(min, max) = rng {
+    pub fn new(rng: Range, step_num: u32) -> Self {
+        if let Range::Specified(min, max) = rng {
             assert!(
                 min < max,
                 "The Bounds are invalid. `Specified(min, max)` => min < max, actual {} < {}",
@@ -44,8 +47,8 @@ impl HistogramBuilder {
         }
     }
 
-    pub fn from_vec(vec: Vec<f64>, rng: Ranges, step_num: u32) -> Self {
-        if let Ranges::Specified(min, max) = rng {
+    pub fn from_vec(vec: Vec<f64>, rng: Range, step_num: u32) -> Self {
+        if let Range::Specified(min, max) = rng {
             assert!(
                 min < max,
                 "The Bounds are invalid. `Specified(min, max)` => min < max, actual {} < {}",
@@ -65,7 +68,7 @@ impl HistogramBuilder {
         }
     }
 
-    /// sorts the values vector
+    /// sorts the values vector in increrasing order
     pub(crate) fn sort(&mut self) {
         self.values.sort_by(|a, b| a.partial_cmp(b).unwrap());
     }
@@ -75,14 +78,14 @@ impl HistogramBuilder {
         self.values.push(val);
     }
 
-    /// creates a `Histogram`  according to the parameters from this `HistogramBuilder`
+    /// creates a `Histogram` according to the parameters from this `HistogramBuilder`
     pub fn as_hist(&mut self) -> Histogram {
         self.sort();
 
         let lower_bound: f64;
         let upper_bound: f64;
         match self.range {
-            Ranges::Unspecified => {
+            Range::Unspecified => {
                 lower_bound = *(self
                     .values
                     .iter()
@@ -95,7 +98,7 @@ impl HistogramBuilder {
                     .unwrap());
             }
 
-            Ranges::Specified(min, max) => {
+            Range::Specified(min, max) => {
                 lower_bound = min;
                 upper_bound = max;
             }
